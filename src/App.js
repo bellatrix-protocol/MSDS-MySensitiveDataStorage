@@ -1,25 +1,42 @@
+import { createBrowserRouter, RouterProvider, Route } from 'react-router-dom';
+
+import { green, red } from '@mui/material/colors';
+// import blue from 'material-ui/colors/blue';
+import { createStyles, ThemeProvider } from '@mui/styles';
+
+import Dashboard from './pages/Dashboard';
+
 import logo from './logo.svg';
 import './App.css';
 
+import './index.css';
+
+const router = createBrowserRouter([
+	{
+		path: '/',
+		element: <Dashboard />,
+	},
+]);
+
+const theme = createStyles({
+	palette: {
+		primary: {
+			main: red[700],
+		},
+		secondary: {
+			main: green[600],
+		},
+	},
+});
+
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	return (
+		<div className="App2">
+			<ThemeProvider theme={theme}>
+				<RouterProvider router={router} />
+			</ThemeProvider>
+		</div>
+	);
 }
 
 export default App;
