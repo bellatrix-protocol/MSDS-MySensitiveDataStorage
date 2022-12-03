@@ -1,5 +1,5 @@
-FROM node:16-alpine AS development
-ENV NODE_ENV development
+FROM node:16-alpine AS production
+ENV NODE_ENV production
 
 RUN apk add --no-cache git
 
