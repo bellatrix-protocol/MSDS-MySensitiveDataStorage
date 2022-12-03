@@ -19,4 +19,4 @@ COPY . .
 EXPOSE 3000
 
 # start the app
-RUN yarn start
+CMD [ "yarn", "start" ]
