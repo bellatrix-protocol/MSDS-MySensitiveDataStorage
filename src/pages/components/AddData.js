@@ -15,28 +15,65 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import FileUpload from 'react-material-file-upload';
 import { Web3Storage, getFilesFromPath } from 'web3.storage';
+import {
+	useContractRead,
+	useAccount,
+	useContractWrite,
+	usePrepareContractWrite,
+	useSigner,
+	useNetwork,
+	useSwitchNetwork,
+} from 'wagmi';
+import ABI from '../../abi/MSDS.js';
 
 const token = process.env.REACT_APP_WEB3STORAGETOKEN;
 console.log(process.env, token);
 const client = new Web3Storage({ token });
 
+function ExecuteButton(props) {
+	const { address, isConnecting, isDisconnected } = useAccount();
+	const { chain } = useNetwork();
+	const { chains, error, isLoading: isLoadingExec, pendingChainId, switchNetwork } = useSwitchNetwork();
+
+	const { config } = usePrepareContractWrite({
+		address: '0xaC380412A4A0564799Ca06E23d8BAae87771A0B4',
+		chainId: 1337,
+		abi: ABI,
+		functionName: 'addData',
+		args: [address?.toString(), props.uname, props.json, 'wfewef', props.pubdataKey, props.privdataKey, props.IPFS_url],
+	});
+
+	const { data: data, isLoading: isLoading, isSuccess, write } = useContractWrite(config);
+
+	console.log(config, data, write);
+
+	console.log(data);
+
+	return (
+		<>
+			<Button fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={!write} onClick={() => write?.()}>
+				Send Transaction to Chain
+			</Button>
+			{isLoading && <div>Check Wallet</div>}
+			{isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
+		</>
+	);
+}
+
 function AddData() {
 	const [uname, setUname] = useState('');
 	const [json, setJson] = useState('');
-	const [file, setFile] = useState([]);
-	const [privdataKey, setPrivDataKey] = useState('');
-	const [pubdataKey, setPubDataKey] = useState('');
+	const [file, setFile] = useState(undefined);
+	const [privdataKey, setPrivDataKey] = useState('Not Empty');
+	const [pubdataKey, setPubDataKey] = useState('Not Empty');
 	const [signature, setSignature] = useState('');
 	const [IPFS_url, setIPFSURL] = useState('');
 
 	const [IPFSUploaded, setIPFSUploaded] = useState(false);
 
-	function handleSubmit() {
-		return;
-	}
-
 	useEffect(() => {
-		if (file != []) {
+		console.log(file);
+		if (file !== undefined) {
 			// const EncryptRsa = require('encrypt-rsa').default;
 			// // create instance
 			// const encryptRsa = new EncryptRsa();
@@ -72,7 +109,7 @@ function AddData() {
 	return (
 		<>
 			<h3>Store my data</h3>
-			<Box component="form" noValidate onSubmit={handleSubmit}>
+			<Box noValidate>
 				<Grid container spacing={2}>
 					<Grid item xs={12}>
 						<TextField
@@ -113,9 +150,7 @@ function AddData() {
 						/>
 					</Grid>
 				</Grid>
-				<Button fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-					Send to chain
-				</Button>
+				<ExecuteButton uname={uname} json={json} pubdataKey={pubdataKey} privdataKey={privdataKey} IPFS_url={IPFS_url} />
 			</Box>
 		</>
 	);

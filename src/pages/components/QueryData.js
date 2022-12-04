@@ -13,15 +13,29 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CardNew from './card.js';
+import { useContractRead, useContractWrite, usePrepareContractWrite, useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
+import ABI from '../../abi/MSDS.js';
 
-function QueryData() {
-	let a = [1, 2, 3, 4, 5, 6];
+function QueryData(props) {
+	const { address, isConnecting, isDisconnected } = useAccount();
+
+	const [list, setList] = React.useState([]);
+
+	const { data, isError, isLoading } = useContractRead({
+		address: '0xaC380412A4A0564799Ca06E23d8BAae87771A0B4',
+		abi: ABI,
+		functionName: 'getData',
+		chainId: 1337,
+	});
+
+	console.log(data);
+	// data.refetch();
 
 	return (
 		<Grid container spacing={3}>
-			{a.map((elem) => (
+			{data?.map((elem) => (
 				<Grid item spacing={3}>
-					<CardNew text={'My Card' + elem} />
+					<CardNew elem={elem} />
 				</Grid>
 			))}
 		</Grid>

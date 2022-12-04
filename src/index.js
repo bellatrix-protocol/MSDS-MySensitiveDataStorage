@@ -5,13 +5,38 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import '@rainbow-me/rainbowkit/styles.css';
 import { getDefaultWallets, RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
-import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
+import { chain, Chain, configureChains, createClient, WagmiConfig } from 'wagmi';
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
+const bellatrixChain: Chain = {
+	id: 1337,
+	name: 'Bellatrix',
+	network: 'Bellatrix',
+	nativeCurrency: {
+		decimals: 18,
+		name: 'Bellatrix',
+		symbol: 'BELLA',
+	},
+	rpcUrls: {
+		default: 'http://localhost:8545',
+	},
+	testnet: false,
+};
+
 const { chains, provider } = configureChains(
-	[chain.goerli, chain.mainnet, chain.polygon, chain.polygonMumbai],
-	[alchemyProvider({ apiKey: 'JSW3hvX1Wom6pOWMt6w6Y4H8RSLhC7ro' }), publicProvider()]
+	[bellatrixChain, chain.goerli, chain.mainnet, chain.polygon, chain.polygonMumbai],
+	[
+		jsonRpcProvider({
+			rpc: (chain) => {
+				if (chain.id !== bellatrixChain.id) return null;
+				return { http: chain.rpcUrls.default };
+			},
+		}),
+		alchemyProvider({ apiKey: 'JSW3hvX1Wom6pOWMt6w6Y4H8RSLhC7ro' }),
+		publicProvider(),
+	]
 );
 
 const { connectors } = getDefaultWallets({

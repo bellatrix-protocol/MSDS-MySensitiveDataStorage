@@ -19,6 +19,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Navbar from './components/navbar';
 import { green, red, blue } from '@mui/material/colors';
+import { useSigner } from 'wagmi';
 
 import AddData from './components/AddData.js';
 import QueryData from './components/QueryData.js';
@@ -52,6 +53,7 @@ const mdTheme = createTheme({
 });
 
 function DashboardContent() {
+	// const { data: signer } = useSigner();
 	return (
 		<ThemeProvider theme={mdTheme}>
 			<Box sx={{ display: 'flex' }}>
