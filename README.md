@@ -1,5 +1,5 @@
 # Introduction
-This project contains the Frontend code for Demo App which we will be used for interacting with the private chain. This app basically signs the transactions and submits documents on IPFS and a transaction on RPC. 
+This project contains the code for Demo dApp which we will be deployed on the private blockchain.The react app is used for interacting with the private chain. This app basically signs the transactions and submits documents on IPFS and a transaction on RPC.
 
 
 
