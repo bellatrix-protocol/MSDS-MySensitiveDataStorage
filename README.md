@@ -1,4 +1,9 @@
-# Getting Started with Create React App
+# Introduction
+This project contains the Frontend code for Demo App which we will be used for interacting with the private chain. This app basically signs the transactions and submits documents on IPFS and a transaction on RPC. 
+
+
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
