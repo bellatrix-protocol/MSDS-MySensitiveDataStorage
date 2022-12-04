@@ -35,6 +35,7 @@ export default function CardNew(props) {
 	return (
 		<Card sx={{ display: 'flex' }} spacing={2}>
 			<Box sx={{ display: 'flex', flexDirection: 'column', alignContent: 'center', m: 1 }} spacing={2}>
+				{props.elem}
 				<CardMedia component="img" sx={{ width: 60 }} image={img} alt="document" />
 			</Box>
 		</Card>
